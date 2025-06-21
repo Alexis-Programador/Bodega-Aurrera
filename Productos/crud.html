@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>CRUD de Selecciones</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f0f0f0; }
+    h1 { color: #333; margin-top: 120px; }
+    .seleccion { background: #fff; padding: 10px; margin-bottom: 10px; border-radius: 5px; }
+    .seleccion input { margin: 5px; }
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100px;
+      background-color: rgb(31, 179, 31);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      box-shadow: 0 2px 5px rgb(255, 255, 255);
+      z-index: 1000;
+    }
+    #imagen {
+      height: 200px;
+      margin-top: 20px;
+
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <img src="bodega.jpg" id="imagen" alt="Logo Bodega" />
+  <div>
+
+    <!--Botones-->
+    <button onclick="window.location.href='file:/E:/Productos/notificaciones.html'"
+      style="margin-right: 20px; padding: 10px 20px; font-size: 16px;">Notificaciones Productos</button>
+    <button onclick="window.location.href='file:/E:/Productos/Productos.html'"
+      style="margin-right: 50px; padding: 10px 20px; font-size: 16px;">Productos</button>
+  </div>
+</header>
+
+<h1>Gestión de Productos Seleccionados</h1>
+
+<!-- Barra de búsqueda -->
+<input type="text" id="buscador" placeholder="Buscar producto..."
+  style="width: 300px; margin-bottom: 20px; padding: 8px; font-size: 16px;" />
+
+<!-- Botones de ordenamiento -->
+<button onclick="ordenarPorNombre()" style="margin-left: 10px; padding: 10px;">Ordenar A-Z / Z-A</button>
+<button onclick="ordenarPorFecha()" style="margin-left: 10px; padding: 10px;">Ordenar por Fecha</button>
+
+<div id="lista"></div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCMAaN-8Ez8UwV2H8czIjhFo3Yap5hSXOQ",
+    authDomain: "calendarionombres.firebaseapp.com",
+    projectId: "calendarionombres",
+    storageBucket: "calendarionombres.appspot.com",
+    messagingSenderId: "421662579027",
+    appId: "1:421662579027:web:d091915c62851e0809e9a6",
+    measurementId: "G-XB0F9LRHC7"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  const lista = document.getElementById('lista');
+  let datosOriginales = [];
+
+  function cargarDatos() {
+    lista.innerHTML = '';
+    datosOriginales = [];
+
+    db.collection("selecciones").get().then(snapshot => {
+      snapshot.forEach(doc => {
+        const datos = doc.data();
+        datos.id = doc.id;
+        datosOriginales.push(datos);
+      });
+      mostrarDatos(datosOriginales);
+    });
+  }
+
+  function mostrarDatos(data) {
+    lista.innerHTML = '';
+    data.forEach(datos => {
+      const div = document.createElement('div');
+      div.className = 'seleccion';
+      div.innerHTML = `
+        <label>Producto:</label>
+        <input type="text" id="nombre-${datos.id}" value="${datos.producto}" />
+        <label>Fecha:</label>
+        <input type="date" id="fecha-${datos.id}" value="${datos.fecha}" />
+        <button onclick="actualizar('${datos.id}')">Actualizar</button>
+        <button onclick="eliminar('${datos.id}')">Eliminar</button>
+      `;
+      lista.appendChild(div);
+    });
+  }
+
+  function actualizar(id) {
+    const nuevoNombre = document.getElementById(`nombre-${id}`).value;
+    const nuevaFecha = document.getElementById(`fecha-${id}`).value;
+
+    db.collection("selecciones").doc(id).update({
+      producto: nuevoNombre,
+      fecha: nuevaFecha
+    })
+    .then(() => {
+      alert("Registro actualizado correctamente.");
+      cargarDatos();
+    })
+    .catch(error => console.error("Error actualizando:", error));
+  }
+
+  function eliminar(id) {
+    if (confirm("¿Seguro que quieres eliminar este registro?")) {
+      db.collection("selecciones").doc(id).delete()
+      .then(() => {
+        alert("Registro eliminado.");
+        cargarDatos();
+      })
+      .catch(error => console.error("Error eliminando:", error));
+    }
+  }
+
+  // Buscador
+  document.getElementById('buscador').addEventListener('input', () => {
+    const texto = document.getElementById('buscador').value.toLowerCase();
+    const filtrados = datosOriginales.filter(d => d.producto.toLowerCase().includes(texto));
+    mostrarDatos(filtrados);
+  });
+
+  // Ordenar A-Z y Z-A
+  let ordenAZ = true;
+  function ordenarPorNombre() {
+    const copia = [...datosOriginales];
+    copia.sort((a, b) => {
+      return ordenAZ
+        ? a.producto.localeCompare(b.producto)
+        : b.producto.localeCompare(a.producto);
+    });
+    ordenAZ = !ordenAZ;
+    mostrarDatos(copia);
+  }
+
+  // Ordenar por fecha 
+  function ordenarPorFecha() {
+    const copia = [...datosOriginales];
+    copia.sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
+    mostrarDatos(copia);
+  }
+
+  cargarDatos();
+</script>
+
+</body>
+</html>

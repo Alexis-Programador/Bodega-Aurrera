@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Productos</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+<header id="cuadrado">
+    <img src="bodega.jpg" id="imagen" alt="Logo Bodega" />
+    <h1 id="parrafo1">Control de caducidad</h1>
+
+</header>
+
+<!-- Firebase-->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+
+<div class="sidebar">
+
+    <!--Barra de busqueda-->
+    <input type="text" id="buscador" placeholder="Buscar producto..." style="width: 117%; margin-bottom: 20px;" />
+    <select id="ordenar" style="width: 120%;">
+        <option value="az">Ordenar A-Z</option>
+        <option value="za">Ordenar Z-A</option>
+    </select>
+
+    <!--Contador-->
+    <div id="contador" style="margin-top: 20px; font-weight: bold;">Mostrando 0 de 0 productos</div>
+
+    <!--Boton de notificaciones-->
+    <button onclick="window.location.href='file:/E:/Productos/notificaciones.html'" style="margin-top: 20px; width: 120%;">Notificaciones</button>
+    <!--Boton de editar fechas-->
+    <button onclick="window.location.href='file:/E:/Productos/crud.html'" style="margin-top: 20px; width: 120%;">Modificacion de Fechas</button>
+
+    
+<h3>"Indicaciones"</h3>
+
+<ul>
+  <li>Dar un click para seleccionar</li>
+  <br>
+  <li>Dar dos click para poner fecha de caducidad</li>
+  <br>
+</ul>
+
+
+</div>
+
+
+<div>
+
+    <!--ID de Fecha-->
+  <p id="fechaBtn" style="display: none;">Fecha</p>
+  <input type="date" id="dateInput" />
+  
+</div>
+
+
+<!--Productos-->
+<div class="container" id="productos">
+  
+    <div class="producto"><img src="Crema norteñita tapa blanca.jpg"><p>Crema Norteñita tapa blanca</p></div>
+    <div class="producto"><img src="norteñita 250.jpg"><p>Crema Norteñita de 250 ml</p></div>
+    <div class="producto"><img src="norteñita 450.jpg"><p>Crema Norteñita de 450 ml</p></div>
+    <div class="producto"><img src="margarina norteñita.jpg"><p>Margarina Norteñita</p></div>
+    <div class="producto"><img src="Queso norteñita.jpg"><p>Queso Norteñita</p></div>
+    <div class="producto"><img src="LALA fresa.jpg"><p>Yogurt de Fresa</p></div>
+    <div class="producto"><img src="LALA Mango.jpg"><p>Yogurt de Mango</p></div>
+    <div class="producto"><img src="LALA Manzana.jpg"><p>Yogurt de Manzana</p></div>
+    <div class="producto"><img src="LALA Crema Tapa Roja.jpg"><p>Lala Crema Tapa Roja</p></div>
+    <div class="producto"><img src="LALA Oaxaca 400.jpg"><p>Lala Queso oaxaca de 400gr</p></div>
+    <div class="producto"><img src="Nutri Yogurt Manzana.jpg"><p>Nutri Yogurt Manzana</p></div>
+    <div class="producto"><img src="LALA Leche 1.8.jpg"><p>Leche Lala de 1.8ml</p></div>
+    <div class="producto"><img src="LALA Leche 1L.jpg"><p>Leche Lala de 1L</p></div>
+    <div class="producto"><img src="LALA Leche Celeste.jpg"><p>Lala Leche Celeste</p></div>
+    <div class="producto"><img src="LALA Leche Dorada.jpg"><p>Lala Leche Dorada</p></div>
+    <div class="producto"><img src="LALA Leche Plateada.jpg"><p>Lala Leche Plateada</p></div>
+    <div class="producto"><img src="LALA Leche Verde.jpg"><p>Lala Leche Verde</p></div>
+    <div class="producto"><img src="LALA Oaxaca 200.jpg"><p>LALA Queso Oaxaca 200gr</p></div>
+    <div class="producto"><img src="Nutri Yogurt Durazno.jpg"><p>Nutri Yogurt Durazno</p></div>
+    <div class="producto"><img src="Nutri Yogurt Fresa.jpg"><p>Nutri Yogurt Fresa</p></div>
+    <div class="producto"><img src="LALA fresa moras.jpg"><p>Yogurt de Fresa Moras</p></div>
+    <div class="producto"><img src="Zwan Pechuga de pavo.jpg"><p>Zwan Pechuga de Pavo</p></div>
+    <div class="producto"><img src="Kir Jamon Americano de Pavo.jpg"><p>Kir Jamon Americano de Pavo</p></div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
